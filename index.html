@@ -1,0 +1,1163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="USP Shia Community - Uniting Shia Students of University of Southern Punjab">
+    <title>USP Shia Community</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-blue: #1e3a8a;
+            --light-blue: #3b82f6;
+            --pale-blue: #dbeafe;
+            --white: #ffffff;
+            --light-gray: #f8fafc;
+            --medium-gray: #e2e8f0;
+            --dark-gray: #64748b;
+            --text-dark: #1e293b;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background-color: var(--white);
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header & Navigation */
+        header {
+            background-color: var(--white);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo h1 {
+            font-size: 1.5rem;
+            color: var(--primary-blue);
+            margin-left: 10px;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background-color: var(--primary-blue);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-weight: bold;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav ul li {
+            margin-left: 25px;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: var(--text-dark);
+            font-weight: 500;
+            transition: color 0.3s;
+            position: relative;
+        }
+
+        nav ul li a:hover {
+            color: var(--primary-blue);
+        }
+
+        nav ul li a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background-color: var(--primary-blue);
+            transition: width 0.3s;
+        }
+
+        nav ul li a:hover::after {
+            width: 100%;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--primary-blue);
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--light-blue) 100%);
+            color: var(--white);
+            padding: 150px 0 80px;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 30px;
+        }
+
+        .cta-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 25px;
+            background-color: var(--white);
+            color: var(--primary-blue);
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: 500;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+
+        .btn:hover {
+            background-color: transparent;
+            color: var(--white);
+            border-color: var(--white);
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            color: var(--white);
+            border: 2px solid var(--white);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--white);
+            color: var(--primary-blue);
+        }
+
+        /* Slider */
+        .slider {
+            margin: 50px auto;
+            max-width: 900px;
+            position: relative;
+            overflow: hidden;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .slides {
+            display: flex;
+            transition: transform 0.5s ease;
+        }
+
+        .slide {
+            min-width: 100%;
+            position: relative;
+        }
+
+        .slide-img {
+            width: 100%;
+            height: 400px;
+            background-color: var(--medium-gray);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--dark-gray);
+            font-size: 1.2rem;
+        }
+
+        .slide-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.6);
+            color: var(--white);
+            padding: 15px;
+            text-align: center;
+        }
+
+        .slider-nav {
+            display: flex;
+            justify-content: center;
+            margin-top: 15px;
+        }
+
+        .slider-dot {
+            width: 12px;
+            height: 12px;
+            background-color: var(--medium-gray);
+            border-radius: 50%;
+            margin: 0 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .slider-dot.active {
+            background-color: var(--primary-blue);
+        }
+
+        /* Sections */
+        section {
+            padding: 80px 0;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+            color: var(--primary-blue);
+        }
+
+        .section-title h2 {
+            font-size: 2rem;
+            margin-bottom: 15px;
+        }
+
+        .section-title p {
+            color: var(--dark-gray);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* About Section */
+        .about-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+
+        .about-card {
+            background-color: var(--white);
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            text-align: center;
+            transition: transform 0.3s;
+        }
+
+        .about-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .about-card h3 {
+            color: var(--primary-blue);
+            margin-bottom: 15px;
+        }
+
+        .about-card p {
+            color: var(--dark-gray);
+        }
+
+        .icon {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: var(--light-blue);
+        }
+
+        /* Team Section */
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+
+        .team-member {
+            background-color: var(--white);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            text-align: center;
+            transition: transform 0.3s;
+        }
+
+        .team-member:hover {
+            transform: translateY(-5px);
+        }
+
+        .member-photo {
+            height: 250px;
+            background-color: var(--medium-gray);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--dark-gray);
+        }
+
+        .member-info {
+            padding: 20px;
+        }
+
+        .member-info h3 {
+            color: var(--primary-blue);
+            margin-bottom: 5px;
+        }
+
+        .member-info p {
+            color: var(--dark-gray);
+            font-weight: 500;
+            margin-bottom: 10px;
+        }
+
+        .member-info .bio {
+            font-weight: normal;
+            font-size: 0.9rem;
+        }
+
+        /* Events Section */
+        .events-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+        }
+
+        .upcoming-events, .past-events {
+            background-color: var(--white);
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .event-list {
+            margin-top: 20px;
+        }
+
+        .event-item {
+            padding: 15px 0;
+            border-bottom: 1px solid var(--medium-gray);
+        }
+
+        .event-item:last-child {
+            border-bottom: none;
+        }
+
+        .event-date {
+            display: inline-block;
+            background-color: var(--pale-blue);
+            color: var(--primary-blue);
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-weight: 500;
+            margin-bottom: 10px;
+        }
+
+        .event-title {
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+
+        .event-description {
+            color: var(--dark-gray);
+            font-size: 0.9rem;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .gallery-item {
+            height: 150px;
+            background-color: var(--medium-gray);
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--dark-gray);
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .gallery-item:hover {
+            transform: scale(1.05);
+        }
+
+        /* Membership Form */
+        .membership-form {
+            max-width: 700px;
+            margin: 0 auto;
+            background-color: var(--white);
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--text-dark);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid var(--medium-gray);
+            border-radius: 5px;
+            font-family: 'Roboto', sans-serif;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--light-blue);
+        }
+
+        textarea.form-control {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        /* Gallery Section */
+        .photo-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .gallery-photo {
+            height: 200px;
+            background-color: var(--medium-gray);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--dark-gray);
+            cursor: pointer;
+            transition: transform 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .gallery-photo:hover {
+            transform: scale(1.03);
+        }
+
+        .photo-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.7);
+            color: var(--white);
+            padding: 10px;
+            transform: translateY(100%);
+            transition: transform 0.3s;
+        }
+
+        .gallery-photo:hover .photo-caption {
+            transform: translateY(0);
+        }
+
+        /* Contact Section */
+        .contact-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+        }
+
+        .contact-info {
+            background-color: var(--white);
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .contact-method {
+            display: flex;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .contact-icon {
+            width: 50px;
+            height: 50px;
+            background-color: var(--pale-blue);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            color: var(--primary-blue);
+            font-size: 1.2rem;
+        }
+
+        .contact-details h3 {
+            margin-bottom: 5px;
+            color: var(--primary-blue);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .social-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: var(--pale-blue);
+            border-radius: 50%;
+            color: var(--primary-blue);
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .social-link:hover {
+            background-color: var(--primary-blue);
+            color: var(--white);
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--primary-blue);
+            color: var(--white);
+            padding: 50px 0 20px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-column h3 {
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+        }
+
+        .footer-column ul {
+            list-style: none;
+        }
+
+        .footer-column ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-column ul li a {
+            color: var(--pale-blue);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-column ul li a:hover {
+            color: var(--white);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--pale-blue);
+            font-size: 0.9rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .events-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-container {
+                padding: 15px 0;
+            }
+
+            nav ul {
+                display: none;
+                position: absolute;
+                top: 70px;
+                left: 0;
+                right: 0;
+                background-color: var(--white);
+                flex-direction: column;
+                padding: 20px;
+                box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+            }
+
+            nav ul.active {
+                display: flex;
+            }
+
+            nav ul li {
+                margin: 10px 0;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .btn {
+                width: 100%;
+                max-width: 250px;
+                margin-bottom: 10px;
+            }
+
+            section {
+                padding: 60px 0;
+            }
+
+            .membership-form {
+                padding: 25px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .container {
+                padding: 0 15px;
+            }
+
+            .logo h1 {
+                font-size: 1.2rem;
+            }
+
+            .hero {
+                padding: 130px 0 60px;
+            }
+
+            .section-title h2 {
+                font-size: 1.7rem;
+            }
+
+            .about-card, .team-member, .upcoming-events, .past-events, .contact-info {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header & Navigation -->
+    <header>
+        <div class="container header-container">
+            <div class="logo">
+                <div class="logo-icon">USC</div>
+                <h1>USP Shia Community</h1>
+            </div>
+            <button class="mobile-menu-btn">☰</button>
+            <nav>
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#about">About Us</a></li>
+                    <li><a href="#team">Leadership</a></li>
+                    <li><a href="#events">Events</a></li>
+                    <li><a href="#membership">Join Us</a></li>
+                    <li><a href="#gallery">Gallery</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Home Section -->
+    <section id="home" class="hero">
+        <div class="container">
+            <h1>Welcome to USP Shia Community</h1>
+            <p>Uniting Shia Students of University of Southern Punjab</p>
+            <p>The USP Shia Community is a student-led organization dedicated to fostering spiritual growth, academic excellence, and community service among Shia Muslim students at the University of Southern Punjab.</p>
+            <div class="cta-buttons">
+                <a href="#membership" class="btn">Become a Member</a>
+                <a href="#events" class="btn btn-secondary">Upcoming Events</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Image Slider -->
+    <div class="container">
+        <div class="slider">
+            <div class="slides">
+                <div class="slide">
+                    <div class="slide-img">Community Event Image 1</div>
+                    <div class="slide-caption">Annual Muharram Gathering 2023</div>
+                </div>
+                <div class="slide">
+                    <div class="slide-img">Community Event Image 2</div>
+                    <div class="slide-caption">Quran Study Session</div>
+                </div>
+                <div class="slide">
+                    <div class="slide-img">Community Event Image 3</div>
+                    <div class="slide-caption">Community Iftar Program</div>
+                </div>
+            </div>
+            <div class="slider-nav">
+                <div class="slider-dot active"></div>
+                <div class="slider-dot"></div>
+                <div class="slider-dot"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- About Us Section -->
+    <section id="about">
+        <div class="container">
+            <div class="section-title">
+                <h2>About Us</h2>
+                <p>Learn about our mission, vision, and core values that guide our community</p>
+            </div>
+            <div class="about-grid">
+                <div class="about-card">
+                    <div class="icon">🎯</div>
+                    <h3>Our Mission</h3>
+                    <p>To create a supportive environment for Shia Muslim students at USP, promoting spiritual growth, academic success, and community engagement.</p>
+                </div>
+                <div class="about-card">
+                    <div class="icon">🔭</div>
+                    <h3>Our Vision</h3>
+                    <p>To be a leading student community that nurtures faith, knowledge, and service, contributing positively to campus life and society.</p>
+                </div>
+                <div class="about-card">
+                    <div class="icon">🤝</div>
+                    <h3>Respect & Unity</h3>
+                    <p>We foster an inclusive environment that respects diversity while promoting unity among all students.</p>
+                </div>
+                <div class="about-card">
+                    <div class="icon">🌱</div>
+                    <h3>Spiritual Growth</h3>
+                    <p>We provide opportunities for spiritual development through religious programs, discussions, and educational sessions.</p>
+                </div>
+                <div class="about-card">
+                    <div class="icon">📚</div>
+                    <h3>Academic Support</h3>
+                    <p>We help students achieve academic excellence through study groups, tutoring, and resource sharing.</p>
+                </div>
+                <div class="about-card">
+                    <div class="icon">❤️</div>
+                    <h3>Community Service</h3>
+                    <p>We engage in charitable activities and community service projects to benefit both campus and local communities.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Leadership Section -->
+    <section id="team" style="background-color: var(--light-gray);">
+        <div class="container">
+            <div class="section-title">
+                <h2>Our Leadership Team</h2>
+                <p>Meet the dedicated students who lead our community</p>
+            </div>
+            <div class="team-grid">
+                <div class="team-member">
+                    <div class="member-photo">Founder Photo</div>
+                    <div class="member-info">
+                        <h3>Ali Raza</h3>
+                        <p>Founder</p>
+                        <p class="bio">Established the USP Shia Community in 2020 to create a supportive space for Shia students on campus.</p>
+                    </div>
+                </div>
+                <div class="team-member">
+                    <div class="member-photo">President Photo</div>
+                    <div class="member-info">
+                        <h3>Fatima Ahmed</h3>
+                        <p>President</p>
+                        <p class="bio">Leads community initiatives and represents the organization at university events.</p>
+                    </div>
+                </div>
+                <div class="team-member">
+                    <div class="member-photo">Vice President Photo</div>
+                    <div class="member-info">
+                        <h3>Hassan Shah</h3>
+                        <p>Vice President</p>
+                        <p class="bio">Supports the president and oversees event planning and member engagement.</p>
+                    </div>
+                </div>
+                <div class="team-member">
+                    <div class="member-photo">Secretary Photo</div>
+                    <div class="member-info">
+                        <h3>Zainab Hussain</h3>
+                        <p>Secretary</p>
+                        <p class="bio">Manages communications, records, and administrative tasks for the community.</p>
+                    </div>
+                </div>
+                <div class="team-member">
+                    <div class="member-photo">Treasurer Photo</div>
+                    <div class="member-info">
+                        <h3>Mohammad Ali</h3>
+                        <p>Treasurer</p>
+                        <p class="bio">Handles finances, budgeting, and fundraising activities for community programs.</p>
+                    </div>
+                </div>
+                <div class="team-member">
+                    <div class="member-photo">Event Coordinator Photo</div>
+                    <div class="member-info">
+                        <h3>Sara Khan</h3>
+                        <p>Event Coordinator</p>
+                        <p class="bio">Organizes and manages all community events, programs, and activities.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Events Section -->
+    <section id="events">
+        <div class="container">
+            <div class="section-title">
+                <h2>Events & Activities</h2>
+                <p>Join us for upcoming events and see highlights from our past activities</p>
+            </div>
+            <div class="events-container">
+                <div class="upcoming-events">
+                    <h3>Upcoming Events</h3>
+                    <div class="event-list">
+                        <div class="event-item">
+                            <span class="event-date">March 15, 2023</span>
+                            <h4 class="event-title">Quran Recitation Competition</h4>
+                            <p class="event-description">Annual competition open to all students with categories for memorization and recitation.</p>
+                        </div>
+                        <div class="event-item">
+                            <span class="event-date">April 5, 2023</span>
+                            <h4 class="event-title">Community Iftar Program</h4>
+                            <p class="event-description">Join us for a communal iftar during the holy month of Ramadan.</p>
+                        </div>
+                        <div class="event-item">
+                            <span class="event-date">May 20, 2023</span>
+                            <h4 class="event-title">Academic Support Workshop</h4>
+                            <p class="event-description">Study skills and exam preparation workshop for all students.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="past-events">
+                    <h3>Past Events Gallery</h3>
+                    <div class="gallery-grid">
+                        <div class="gallery-item">Event Photo 1</div>
+                        <div class="gallery-item">Event Photo 2</div>
+                        <div class="gallery-item">Event Photo 3</div>
+                        <div class="gallery-item">Event Photo 4</div>
+                        <div class="gallery-item">Event Photo 5</div>
+                        <div class="gallery-item">Event Photo 6</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Membership Section -->
+    <section id="membership" style="background-color: var(--light-gray);">
+        <div class="container">
+            <div class="section-title">
+                <h2>Join Our Community</h2>
+                <p>Become a member of USP Shia Community and be part of our growing family</p>
+            </div>
+            <div class="membership-form">
+                <form id="join-form">
+                    <div class="form-group">
+                        <label for="name">Full Name</label>
+                        <input type="text" id="name" class="form-control" placeholder="Enter your full name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="student-id">Student ID</label>
+                        <input type="text" id="student-id" class="form-control" placeholder="Enter your student ID" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="department">Department</label>
+                        <input type="text" id="department" class="form-control" placeholder="Enter your department" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="year">Year of Study</label>
+                        <select id="year" class="form-control" required>
+                            <option value="">Select your year</option>
+                            <option value="1st">1st Year</option>
+                            <option value="2nd">2nd Year</option>
+                            <option value="3rd">3rd Year</option>
+                            <option value="4th">4th Year</option>
+                            <option value="5th">5th Year</option>
+                            <option value="grad">Graduate</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" class="form-control" placeholder="Enter your email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Phone Number</label>
+                        <input type="tel" id="phone" class="form-control" placeholder="Enter your phone number">
+                    </div>
+                    <div class="form-group">
+                        <label for="interests">Areas of Interest</label>
+                        <select id="interests" class="form-control" multiple>
+                            <option value="religious">Religious Programs</option>
+                            <option value="academic">Academic Support</option>
+                            <option value="social">Social Events</option>
+                            <option value="community">Community Service</option>
+                            <option value="sports">Sports Activities</option>
+                            <option value="leadership">Leadership Roles</option>
+                        </select>
+                        <small>Hold Ctrl/Cmd to select multiple options</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="suggestions">Suggestions or Comments</label>
+                        <textarea id="suggestions" class="form-control" placeholder="Any suggestions or comments for our community?"></textarea>
+                    </div>
+                    <button type="submit" class="btn" style="background-color: var(--primary-blue); color: white; width: 100%;">Submit Application</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section id="gallery">
+        <div class="container">
+            <div class="section-title">
+                <h2>Photo Gallery</h2>
+                <p>Memories from our community events and activities</p>
+            </div>
+            <div class="photo-gallery">
+                <div class="gallery-photo">
+                    Photo 1
+                    <div class="photo-caption">Muharram Gathering 2022</div>
+                </div>
+                <div class="gallery-photo">
+                    Photo 2
+                    <div class="photo-caption">Quran Study Session</div>
+                </div>
+                <div class="gallery-photo">
+                    Photo 3
+                    <div class="photo-caption">Community Service Day</div>
+                </div>
+                <div class="gallery-photo">
+                    Photo 4
+                    <div class="photo-caption">Eid Celebration</div>
+                </div>
+                <div class="gallery-photo">
+                    Photo 5
+                    <div class="photo-caption">Academic Workshop</div>
+                </div>
+                <div class="gallery-photo">
+                    Photo 6
+                    <div class="photo-caption">Campus Cleanup</div>
+                </div>
+                <div class="gallery-photo">
+                    Photo 7
+                    <div class="photo-caption">Interfaith Dialogue</div>
+                </div>
+                <div class="gallery-photo">
+                    Photo 8
+                    <div class="photo-caption">Sports Tournament</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" style="background-color: var(--light-gray);">
+        <div class="container">
+            <div class="section-title">
+                <h2>Contact Us</h2>
+                <p>Get in touch with USP Shia Community</p>
+            </div>
+            <div class="contact-container">
+                <div class="contact-info">
+                    <h3>Connect With Us</h3>
+                    <div class="contact-method">
+                        <div class="contact-icon">✉️</div>
+                        <div class="contact-details">
+                            <h3>Email</h3>
+                            <p>uspshiacommunity@example.com</p>
+                        </div>
+                    </div>
+                    <div class="contact-method">
+                        <div class="contact-icon">📱</div>
+                        <div class="contact-details">
+                            <h3>WhatsApp Group</h3>
+                            <p>Join our community WhatsApp group</p>
+                        </div>
+                    </div>
+                    <div class="contact-method">
+                        <div class="contact-icon">📍</div>
+                        <div class="contact-details">
+                            <h3>Location</h3>
+                            <p>University of Southern Punjab<br>Student Center, Room 205</p>
+                        </div>
+                    </div>
+                    <div class="social-links">
+                        <a href="#" class="social-link">f</a>
+                        <a href="#" class="social-link">in</a>
+                        <a href="#" class="social-link">ig</a>
+                    </div>
+                </div>
+                <div class="contact-info">
+                    <h3>Visit Us</h3>
+                    <div style="height: 300px; background-color: var(--medium-gray); display: flex; align-items: center; justify-content: center; border-radius: 8px; margin-top: 20px;">
+                        Map Placeholder
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>USP Shia Community</h3>
+                    <p>Uniting Shia Students of University of Southern Punjab through faith, knowledge, and service.</p>
+                </div>
+                <div class="footer-column">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#about">About Us</a></li>
+                        <li><a href="#team">Leadership</a></li>
+                        <li><a href="#events">Events</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Resources</h3>
+                    <ul>
+                        <li><a href="#membership">Join Us</a></li>
+                        <li><a href="#gallery">Gallery</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                        <li><a href="#">Prayer Times</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Stay Connected</h3>
+                    <p>Subscribe to our newsletter for updates on events and activities.</p>
+                    <div style="display: flex; margin-top: 15px;">
+                        <input type="email" placeholder="Your email" style="padding: 10px; border: none; border-radius: 4px 0 0 4px; flex: 1;">
+                        <button style="background-color: var(--light-blue); color: white; border: none; padding: 0 15px; border-radius: 0 4px 4px 0; cursor: pointer;">Subscribe</button>
+                    </div>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2023 USP Shia Community. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile Menu Toggle
+        document.querySelector('.mobile-menu-btn').addEventListener('click', function() {
+            document.querySelector('nav ul').classList.toggle('active');
+        });
+
+        // Image Slider
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const dots = document.querySelectorAll('.slider-dot');
+        const totalSlides = slides.length;
+
+        function showSlide(n) {
+            slides.forEach(slide => {
+                slide.style.display = 'none';
+            });
+            dots.forEach(dot => {
+                dot.classList.remove('active');
+            });
+            
+            currentSlide = (n + totalSlides) % totalSlides;
+            slides[currentSlide].style.display = 'block';
+            dots[currentSlide].classList.add('active');
+        }
+
+        // Initialize slider
+        showSlide(0);
+
+        // Auto slide
+        setInterval(() => {
+            showSlide(currentSlide + 1);
+        }, 5000);
+
+        // Dot navigation
+        dots.forEach((dot, index) => {
+            dot.addEventListener('click', () => {
+                showSlide(index);
+            });
+        });
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('nav a').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                window.scrollTo({
+                    top: targetElement.offsetTop - 80,
+                    behavior: 'smooth'
+                });
+                
+                // Close mobile menu if open
+                document.querySelector('nav ul').classList.remove('active');
+            });
+        });
+
+        // Form submission
+        document.getElementById('join-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Thank you for your interest in joining USP Shia Community! We will contact you soon.');
+            this.reset();
+        });
+    </script>
+</body>
+</html>
