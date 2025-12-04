@@ -531,6 +531,54 @@
             min-width: 150px;
         }
 
+        /* GitHub Connection Status */
+        .github-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            background-color: var(--light-gray);
+            border: 1px solid var(--medium-gray);
+        }
+
+        .github-status.connected {
+            background-color: rgba(16, 185, 129, 0.1);
+            color: var(--success);
+            border-color: rgba(16, 185, 129, 0.3);
+        }
+
+        .github-status.disconnected {
+            background-color: rgba(239, 68, 68, 0.1);
+            color: var(--danger);
+            border-color: rgba(239, 68, 68, 0.3);
+        }
+
+        .github-config-modal {
+            display: none;
+        }
+
+        .github-config-modal.active {
+            display: flex;
+        }
+
+        /* Loading States */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
         /* Responsive Styles */
         @media (max-width: 1024px) {
             .dashboard-cards {
@@ -618,6 +666,40 @@
         ::-webkit-scrollbar-thumb:hover {
             background: #a8a8a8;
         }
+
+        /* Notification */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 20px;
+            border-radius: 8px;
+            color: white;
+            font-weight: 500;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transform: translateX(120%);
+            transition: transform 0.3s ease;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .notification.success {
+            background-color: var(--success);
+        }
+
+        .notification.error {
+            background-color: var(--danger);
+        }
+
+        .notification.info {
+            background-color: var(--light-blue);
+        }
     </style>
 </head>
 <body>
@@ -636,6 +718,7 @@
             <li><a href="#" data-tab="gallery"><i class="fas fa-images"></i> Gallery</a></li>
             <li><a href="#" data-tab="messages"><i class="fas fa-envelope"></i> Messages</a></li>
             <li><a href="#" data-tab="settings"><i class="fas fa-cog"></i> Settings</a></li>
+            <li><a href="#" id="githubConfigBtn"><i class="fab fa-github"></i> GitHub Setup</a></li>
             <li><a href="#"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
         </ul>
     </div>
@@ -651,6 +734,10 @@
                 <h1 class="page-title" id="pageTitle">Admin Dashboard</h1>
             </div>
             <div class="admin-info">
+                <div class="github-status" id="githubStatus">
+                    <i class="fas fa-circle"></i>
+                    <span>GitHub: Disconnected</span>
+                </div>
                 <div class="admin-avatar">AM</div>
                 <div class="admin-name">Admin Manager</div>
             </div>
@@ -664,6 +751,9 @@
                 <div class="welcome-section">
                     <h1>Welcome back, Admin Manager!</h1>
                     <p>Here's what's happening with your community today.</p>
+                    <p id="syncStatus" style="margin-top: 10px; font-size: 0.9rem;">
+                        <i class="fas fa-sync"></i> Last sync: <span id="lastSync">Never</span>
+                    </p>
                 </div>
 
                 <!-- Dashboard Cards -->
@@ -673,7 +763,7 @@
                             <div class="card-icon members">
                                 <i class="fas fa-users"></i>
                             </div>
-                            <span class="card-value">245</span>
+                            <span class="card-value" id="totalMembers">0</span>
                         </div>
                         <div class="card-label">Total Members</div>
                     </div>
@@ -682,7 +772,7 @@
                             <div class="card-icon events">
                                 <i class="fas fa-calendar-check"></i>
                             </div>
-                            <span class="card-value">12</span>
+                            <span class="card-value" id="upcomingEvents">0</span>
                         </div>
                         <div class="card-label">Upcoming Events</div>
                     </div>
@@ -691,7 +781,7 @@
                             <div class="card-icon events">
                                 <i class="fas fa-history"></i>
                             </div>
-                            <span class="card-value">48</span>
+                            <span class="card-value" id="pastEvents">0</span>
                         </div>
                         <div class="card-label">Past Events</div>
                     </div>
@@ -700,7 +790,7 @@
                             <div class="card-icon applications">
                                 <i class="fas fa-user-clock"></i>
                             </div>
-                            <span class="card-value">18</span>
+                            <span class="card-value" id="pendingApplications">0</span>
                         </div>
                         <div class="card-label">Pending Applications</div>
                     </div>
@@ -709,9 +799,22 @@
                             <div class="card-icon messages">
                                 <i class="fas fa-envelope"></i>
                             </div>
-                            <span class="card-value">7</span>
+                            <span class="card-value" id="newMessages">0</span>
                         </div>
                         <div class="card-label">New Messages</div>
+                    </div>
+                </div>
+
+                <!-- Sync Controls -->
+                <div class="section-header">
+                    <h2>Data Management</h2>
+                    <div style="display: flex; gap: 10px;">
+                        <button class="btn btn-outline" id="loadFromGitHub">
+                            <i class="fas fa-download"></i> Load from GitHub
+                        </button>
+                        <button class="btn btn-primary" id="saveToGitHub">
+                            <i class="fas fa-save"></i> Save to GitHub
+                        </button>
                     </div>
                 </div>
 
@@ -720,7 +823,7 @@
                     <h2>Recent Activity</h2>
                 </div>
                 <div class="table-container">
-                    <table>
+                    <table id="activityTable">
                         <thead>
                             <tr>
                                 <th>Date</th>
@@ -729,37 +832,8 @@
                                 <th>Details</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr>
-                                <td>2023-10-15</td>
-                                <td>New member registration</td>
-                                <td>Ahmed Khan</td>
-                                <td>Student ID: S12345</td>
-                            </tr>
-                            <tr>
-                                <td>2023-10-14</td>
-                                <td>Event created</td>
-                                <td>Admin</td>
-                                <td>Quran Reading Session</td>
-                            </tr>
-                            <tr>
-                                <td>2023-10-13</td>
-                                <td>Gallery image uploaded</td>
-                                <td>Fatima Ali</td>
-                                <td>Eid Celebration 2023</td>
-                            </tr>
-                            <tr>
-                                <td>2023-10-12</td>
-                                <td>Member approved</td>
-                                <td>Admin</td>
-                                <td>Zainab Hassan - Status changed to Approved</td>
-                            </tr>
-                            <tr>
-                                <td>2023-10-11</td>
-                                <td>Contact form submission</td>
-                                <td>Mohammed Raza</td>
-                                <td>Question about community events</td>
-                            </tr>
+                        <tbody id="activityBody">
+                            <!-- Activity data will be loaded here -->
                         </tbody>
                     </table>
                 </div>
@@ -769,9 +843,14 @@
             <div class="tab-content" id="members">
                 <div class="section-header">
                     <h2>Members Management</h2>
-                    <button class="btn btn-primary" id="addMemberBtn">
-                        <i class="fas fa-plus"></i> Add Member
-                    </button>
+                    <div style="display: flex; gap: 10px;">
+                        <button class="btn btn-outline" id="loadMembers">
+                            <i class="fas fa-sync"></i> Refresh
+                        </button>
+                        <button class="btn btn-primary" id="addMemberBtn">
+                            <i class="fas fa-plus"></i> Add Member
+                        </button>
+                    </div>
                 </div>
 
                 <!-- Search and Filter -->
@@ -796,7 +875,7 @@
 
                 <!-- Members Table -->
                 <div class="table-container">
-                    <table>
+                    <table id="membersTable">
                         <thead>
                             <tr>
                                 <th>Name</th>
@@ -810,67 +889,8 @@
                                 <th>Actions</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr>
-                                <td>Ali Raza</td>
-                                <td>S12345</td>
-                                <td>Computer Science</td>
-                                <td>3</td>
-                                <td>ali.raza@usp.ac.fj</td>
-                                <td>+679 912 3456</td>
-                                <td>Quran, Community Service</td>
-                                <td><span class="status approved">Approved</span></td>
-                                <td>
-                                    <button class="btn btn-success btn-sm"><i class="fas fa-check"></i></button>
-                                    <button class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></button>
-                                    <button class="btn btn-danger btn-sm"><i class="fas fa-times"></i></button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Fatima Khan</td>
-                                <td>S12346</td>
-                                <td>Engineering</td>
-                                <td>2</td>
-                                <td>fatima.khan@usp.ac.fj</td>
-                                <td>+679 923 4567</td>
-                                <td>Islamic Studies, Events</td>
-                                <td><span class="status approved">Approved</span></td>
-                                <td>
-                                    <button class="btn btn-success btn-sm"><i class="fas fa-check"></i></button>
-                                    <button class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></button>
-                                    <button class="btn btn-danger btn-sm"><i class="fas fa-times"></i></button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Mohammed Hassan</td>
-                                <td>S12347</td>
-                                <td>Business</td>
-                                <td>4</td>
-                                <td>mohammed.hassan@usp.ac.fj</td>
-                                <td>+679 934 5678</td>
-                                <td>Debate, Leadership</td>
-                                <td><span class="status pending">Pending</span></td>
-                                <td>
-                                    <button class="btn btn-success btn-sm"><i class="fas fa-check"></i></button>
-                                    <button class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></button>
-                                    <button class="btn btn-danger btn-sm"><i class="fas fa-times"></i></button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Zainab Ali</td>
-                                <td>S12348</td>
-                                <td>Medicine</td>
-                                <td>1</td>
-                                <td>zainab.ali@usp.ac.fj</td>
-                                <td>+679 945 6789</td>
-                                <td>Charity, Health Awareness</td>
-                                <td><span class="status pending">Pending</span></td>
-                                <td>
-                                    <button class="btn btn-success btn-sm"><i class="fas fa-check"></i></button>
-                                    <button class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></button>
-                                    <button class="btn btn-danger btn-sm"><i class="fas fa-times"></i></button>
-                                </td>
-                            </tr>
+                        <tbody id="membersBody">
+                            <!-- Members data will be loaded here -->
                         </tbody>
                     </table>
                 </div>
@@ -880,14 +900,19 @@
             <div class="tab-content" id="events">
                 <div class="section-header">
                     <h2>Events Management</h2>
-                    <button class="btn btn-primary" id="addEventBtn">
-                        <i class="fas fa-plus"></i> Add Event
-                    </button>
+                    <div style="display: flex; gap: 10px;">
+                        <button class="btn btn-outline" id="loadEvents">
+                            <i class="fas fa-sync"></i> Refresh
+                        </button>
+                        <button class="btn btn-primary" id="addEventBtn">
+                            <i class="fas fa-plus"></i> Add Event
+                        </button>
+                    </div>
                 </div>
 
                 <!-- Events Table -->
                 <div class="table-container">
-                    <table>
+                    <table id="eventsTable">
                         <thead>
                             <tr>
                                 <th>Event Name</th>
@@ -897,47 +922,8 @@
                                 <th>Actions</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr>
-                                <td>Quran Reading Session</td>
-                                <td>2023-10-25</td>
-                                <td>Weekly Quran recitation and discussion</td>
-                                <td>45</td>
-                                <td>
-                                    <button class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></button>
-                                    <button class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Eid Celebration</td>
-                                <td>2023-11-05</td>
-                                <td>Community gathering for Eid festivities</td>
-                                <td>120</td>
-                                <td>
-                                    <button class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></button>
-                                    <button class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Islamic History Lecture</td>
-                                <td>2023-11-15</td>
-                                <td>Lecture on early Islamic history</td>
-                                <td>60</td>
-                                <td>
-                                    <button class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></button>
-                                    <button class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Community Service Day</td>
-                                <td>2023-11-25</td>
-                                <td>Beach cleanup and community outreach</td>
-                                <td>35</td>
-                                <td>
-                                    <button class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></button>
-                                    <button class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
-                                </td>
-                            </tr>
+                        <tbody id="eventsBody">
+                            <!-- Events data will be loaded here -->
                         </tbody>
                     </table>
                 </div>
@@ -947,53 +933,19 @@
             <div class="tab-content" id="gallery">
                 <div class="section-header">
                     <h2>Gallery Management</h2>
-                    <button class="btn btn-primary" id="uploadImageBtn">
-                        <i class="fas fa-upload"></i> Upload Image
-                    </button>
+                    <div style="display: flex; gap: 10px;">
+                        <button class="btn btn-outline" id="loadGallery">
+                            <i class="fas fa-sync"></i> Refresh
+                        </button>
+                        <button class="btn btn-primary" id="uploadImageBtn">
+                            <i class="fas fa-upload"></i> Upload Image
+                        </button>
+                    </div>
                 </div>
 
                 <!-- Gallery Grid -->
-                <div class="gallery-grid">
-                    <div class="gallery-item">
-                        <div class="gallery-img">
-                            <i class="fas fa-image fa-3x"></i>
-                        </div>
-                        <div class="gallery-caption">Eid Celebration 2023</div>
-                        <div class="gallery-actions">
-                            <button class="btn btn-warning btn-sm"><i class="fas fa-edit"></i> Edit</button>
-                            <button class="btn btn-danger btn-sm"><i class="fas fa-trash"></i> Delete</button>
-                        </div>
-                    </div>
-                    <div class="gallery-item">
-                        <div class="gallery-img">
-                            <i class="fas fa-image fa-3x"></i>
-                        </div>
-                        <div class="gallery-caption">Community Service Day</div>
-                        <div class="gallery-actions">
-                            <button class="btn btn-warning btn-sm"><i class="fas fa-edit"></i> Edit</button>
-                            <button class="btn btn-danger btn-sm"><i class="fas fa-trash"></i> Delete</button>
-                        </div>
-                    </div>
-                    <div class="gallery-item">
-                        <div class="gallery-img">
-                            <i class="fas fa-image fa-3x"></i>
-                        </div>
-                        <div class="gallery-caption">Quran Session</div>
-                        <div class="gallery-actions">
-                            <button class="btn btn-warning btn-sm"><i class="fas fa-edit"></i> Edit</button>
-                            <button class="btn btn-danger btn-sm"><i class="fas fa-trash"></i> Delete</button>
-                        </div>
-                    </div>
-                    <div class="gallery-item">
-                        <div class="gallery-img">
-                            <i class="fas fa-image fa-3x"></i>
-                        </div>
-                        <div class="gallery-caption">Islamic Lecture</div>
-                        <div class="gallery-actions">
-                            <button class="btn btn-warning btn-sm"><i class="fas fa-edit"></i> Edit</button>
-                            <button class="btn btn-danger btn-sm"><i class="fas fa-trash"></i> Delete</button>
-                        </div>
-                    </div>
+                <div class="gallery-grid" id="galleryGrid">
+                    <!-- Gallery items will be loaded here -->
                 </div>
             </div>
 
@@ -1001,51 +953,26 @@
             <div class="tab-content" id="messages">
                 <div class="section-header">
                     <h2>Contact Messages</h2>
+                    <button class="btn btn-outline" id="loadMessages">
+                        <i class="fas fa-sync"></i> Refresh
+                    </button>
                 </div>
 
                 <!-- Messages Table -->
                 <div class="table-container">
-                    <table>
+                    <table id="messagesTable">
                         <thead>
                             <tr>
                                 <th>Sender</th>
                                 <th>Email</th>
                                 <th>Message</th>
                                 <th>Date</th>
+                                <th>Status</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr>
-                                <td>Ahmed Raza</td>
-                                <td>ahmed.raza@usp.ac.fj</td>
-                                <td>I would like to join the community. How can I register?</td>
-                                <td>2023-10-15</td>
-                                <td>
-                                    <button class="btn btn-primary btn-sm"><i class="fas fa-reply"></i> Reply</button>
-                                    <button class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Fatima Khan</td>
-                                <td>fatima.khan@usp.ac.fj</td>
-                                <td>When is the next Quran session? I would like to attend.</td>
-                                <td>2023-10-14</td>
-                                <td>
-                                    <button class="btn btn-primary btn-sm"><i class="fas fa-reply"></i> Reply</button>
-                                    <button class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Mohammed Ali</td>
-                                <td>mohammed.ali@usp.ac.fj</td>
-                                <td>I have a suggestion for the next community event.</td>
-                                <td>2023-10-13</td>
-                                <td>
-                                    <button class="btn btn-primary btn-sm"><i class="fas fa-reply"></i> Reply</button>
-                                    <button class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
-                                </td>
-                            </tr>
+                        <tbody id="messagesBody">
+                            <!-- Messages data will be loaded here -->
                         </tbody>
                     </table>
                 </div>
@@ -1080,7 +1007,40 @@
                         </select>
                     </div>
                     
-                    <button class="btn btn-primary">Save Settings</button>
+                    <button class="btn btn-primary" id="saveSettings">Save Settings</button>
+                </div>
+
+                <div class="card" style="margin-top: 20px;">
+                    <div class="section-header">
+                        <h3>GitHub Configuration</h3>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>GitHub Status</label>
+                        <div id="githubConfigStatus" class="github-status disconnected">
+                            <i class="fas fa-circle"></i>
+                            <span>Not Configured</span>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="repoName">Repository Name</label>
+                        <input type="text" id="repoName" class="form-control" placeholder="usp-shia-data">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="branchName">Branch Name</label>
+                        <input type="text" id="branchName" class="form-control" placeholder="main">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="dataPath">Data Path</label>
+                        <input type="text" id="dataPath" class="form-control" placeholder="data/">
+                    </div>
+                    
+                    <button class="btn btn-primary" id="testGitHubConnection">
+                        <i class="fab fa-github"></i> Test Connection
+                    </button>
                 </div>
             </div>
         </div>
@@ -1096,15 +1056,15 @@
             <div class="modal-body">
                 <form id="memberForm">
                     <div class="form-group">
-                        <label for="fullName">Full Name</label>
+                        <label for="fullName">Full Name *</label>
                         <input type="text" id="fullName" class="form-control" required>
                     </div>
                     <div class="form-group">
-                        <label for="studentId">Student ID</label>
+                        <label for="studentId">Student ID *</label>
                         <input type="text" id="studentId" class="form-control" required>
                     </div>
                     <div class="form-group">
-                        <label for="department">Department</label>
+                        <label for="department">Department *</label>
                         <select id="department" class="form-control" required>
                             <option value="">Select Department</option>
                             <option value="computer-science">Computer Science</option>
@@ -1116,8 +1076,90 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="year">Year of Study</label>
+                        <label for="year">Year of Study *</label>
                         <select id="year" class="form-control" required>
                             <option value="">Select Year</option>
                             <option value="1">1st Year</option>
-                            <option value="2">2nd Year
+                            <option value="2">2nd Year</option>
+                            <option value="3">3rd Year</option>
+                            <option value="4">4th Year</option>
+                            <option value="5">5th Year+</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email *</label>
+                        <input type="email" id="email" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Phone Number</label>
+                        <input type="tel" id="phone" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="interests">Areas of Interest</label>
+                        <textarea id="interests" class="form-control" rows="3"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="status">Status *</label>
+                        <select id="status" class="form-control" required>
+                            <option value="pending">Pending</option>
+                            <option value="approved">Approved</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">
+                        <span id="memberSubmitText">Add Member</span>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Event Modal -->
+    <div class="modal" id="addEventModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Add New Event</h3>
+                <button class="close-modal" id="closeEventModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="eventForm">
+                    <div class="form-group">
+                        <label for="eventName">Event Name *</label>
+                        <input type="text" id="eventName" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="eventDate">Event Date *</label>
+                        <input type="date" id="eventDate" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="eventTime">Event Time *</label>
+                        <input type="time" id="eventTime" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="eventLocation">Event Location *</label>
+                        <input type="text" id="eventLocation" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="eventDescription">Event Description *</label>
+                        <textarea id="eventDescription" class="form-control" rows="4" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">
+                        <span id="eventSubmitText">Add Event</span>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- GitHub Configuration Modal -->
+    <div class="modal github-config-modal" id="githubConfigModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>GitHub Configuration</h3>
+                <button class="close-modal" id="closeGitHubConfigModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="githubToken">GitHub Personal Access Token *</label>
+                    <input type="password" id="githubToken" class="form-control" 
+                           placeholder="ghp_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" required>
+                    <small style="color: var(--dark-gray); margin-top: 5
