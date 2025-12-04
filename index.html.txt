@@ -1161,3 +1161,22 @@
     </script>
 </body>
 </html>
+
+<script type="module">
+  // Firebase SDK CDN imports
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-analytics.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyAwatMUVyteyE96OcrM67486uSa4rE_bQ0",
+    authDomain: "usp-shia-community.firebaseapp.com",
+    projectId: "usp-shia-community",
+    storageBucket: "usp-shia-community.firebasestorage.app",
+    messagingSenderId: "390023876826",
+    appId: "1:390023876826:web:58910cf5743544f14f55e3",
+    measurementId: "G-TV384HF95L"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
+</script>
